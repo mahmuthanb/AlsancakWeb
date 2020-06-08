@@ -1,0 +1,20 @@
+<header class="header-6">
+    <div class="branding">
+        <a href="/" class="nav-link">
+            <clr-icon shape="cloud-network" class="is-inverse"></clr-icon>
+            <span class="title"> {{ title }} </span>
+        </a>
+    </div>
+    <div class="header-actions">
+        <clr-dropdown>
+            <button class="nav-text" clrDropdownTrigger aria-label="open user profile">
+                {{ username }}
+                <clr-icon shape="caret down"></clr-icon>
+            </button>
+            <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right">
+                <a href="#" clrDropdownItem>ayarlar</a>
+                <a href="javascript:void(0)" (onClick)="logOut()" clrDropdownItem>çıkış</a>
+            </clr-dropdown-menu>
+        </clr-dropdown>
+    </div>
+</header>

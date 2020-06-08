@@ -1,0 +1,55 @@
+<div class="p-3">
+    <form clrForm clr-form-compact clrLayout="vertical" class="form-request" [formGroup]="addNewRequest">
+        <clr-input-container>
+            <label>Ürün</label>
+            <input clrInput type="text" style="width:100%;" formControlName="urun" />
+            <clr-control-helper></clr-control-helper>
+            <clr-control-error>Ürünü seçmeden nereye gidiyorsun bitch</clr-control-error>
+        </clr-input-container>
+        <clr-select-container>
+            <label>Renk</label>
+            <select clrSelect formControlName="renk" required>
+                <option *ngFor="let color of colors" value="color.id">{{color.value}}</option>
+            </select>
+            <clr-control-error>Ürünü seçmeden nereye gidiyorsun bitch</clr-control-error>
+        </clr-select-container>
+        
+        <clr-select-container>
+            <label>Beden</label>
+            <select clrSelect formControlName="beden" required>
+                <option *ngFor="let color of colors" value="color.id">{{color.value}}</option>
+            </select>
+            <clr-control-error>Ürünü seçmeden nereye gidiyorsun bitch</clr-control-error>
+        </clr-select-container>
+
+        <clr-select-container>
+            <label>Kumaş</label>
+            <select clrSelect formControlName="kumas" required>
+                <option *ngFor="let color of colors" value="color.id">{{color.value}}</option>
+            </select>
+            <clr-control-error>Ürünü seçmeden nereye gidiyorsun bitch</clr-control-error>
+        </clr-select-container>
+
+        <clr-select-container>
+            <label>Cinsiyet</label>
+            <select clrSelect formControlName="cinsiyet" required>
+                <option *ngFor="let color of colors" value="color.id">{{color.value}}</option>
+            </select>
+            <clr-control-error>Ürünü seçmeden nereye gidiyorsun bitch</clr-control-error>
+        </clr-select-container>
+
+        <clr-select-container>
+            <label>Adet</label>
+            <select clrSelect formControlName="adet" required>
+                <option *ngFor="let color of colors" value="color.id">{{color.value}}</option>
+            </select>
+            <clr-control-error>Ürünü seçmeden nereye gidiyorsun bitch</clr-control-error>
+        </clr-select-container>
+        <clr-input-container>
+            <label>Not</label>
+            <input clrInput type="text" formControlName="not" />
+            <clr-control-helper></clr-control-helper>
+            <clr-control-error>Ürünü seçmeden nereye gidiyorsun bitch</clr-control-error>
+        </clr-input-container>
+    </form>
+</div>

@@ -1,0 +1,235 @@
+<div class="main-container">
+    <app-header></app-header>
+    <div class="content-container">
+        <!-- <nav class="sidenav">
+            <app-addrequest></app-addrequest>
+        </nav> -->
+        <div class="content-area">
+            <clr-datagrid [(clrDgSelected)]="selected">
+                <clr-dg-action-bar>
+                    <div class="btn-group btn-primary">
+                        <button type="button" class="btn btn-success" (click)="opened = true">
+                            <clr-icon shape="plus"></clr-icon> YENİ TALEP
+                        </button>
+                    </div>
+                    <clr-modal [(clrModalOpen)]="opened" [clrModalClosable]="true">
+                        <h3 class="modal-title">Yeni Talep Ekle</h3>
+                        <div class="modal-body">
+                            <div class="p-3">
+                                <form clrForm clr-form-compact clrLayout="vertical" class="form-request"
+                                    [formGroup]="addNewRequest">
+                                    <clr-select-container>
+                                        <label>Ürün</label>
+                                        <select clrSelect formControlName="urun" required>
+                                            <option *ngFor="let product of products" [value]="product.value">
+                                                {{product.value}}</option>
+                                        </select>
+                                        <clr-control-error>Ürün seçimi zorunludur.</clr-control-error>
+                                    </clr-select-container>
+
+                                    <clr-select-container>
+                                        <label>Renk</label>
+                                        <select clrSelect formControlName="renk" required>
+                                            <option *ngFor="let color of colors" [value]="color.value">{{color.value}}
+                                            </option>
+                                        </select>
+                                        <clr-control-error>Renk seçimi zorunludur.</clr-control-error>
+                                    </clr-select-container>
+
+                                    <clr-select-container>
+                                        <label>Beden</label>
+                                        <select clrSelect formControlName="beden" required>
+                                            <option *ngFor="let size of sizes" [value]="size.value">{{size.value}}</option>
+                                        </select>
+                                        <clr-control-error>Beden seçimi zorunludur.</clr-control-error>
+                                    </clr-select-container>
+
+                                    <clr-select-container>
+                                        <label>Kumaş</label>
+                                        <select clrSelect formControlName="kumas" required>
+                                            <option *ngFor="let fabric of fabrics" [value]="fabric.value">{{fabric.value}}
+                                            </option>
+                                        </select>
+                                        <clr-control-error>Kumaş seçimi zorunludur.</clr-control-error>
+                                    </clr-select-container>
+
+                                    <clr-radio-container clrInline>
+                                        <label>Cinsiyet</label>
+                                        <clr-radio-wrapper>
+                                            <input type="radio" name="cinsiyet" clrRadio required value="BAYAN"
+                                                formControlName="cinsiyet" />
+                                            <label>BAYAN</label>
+                                        </clr-radio-wrapper>
+                                        <clr-radio-wrapper>
+                                            <input type="radio" name="cinsiyet" clrRadio required value="ERKEK"
+                                                formControlName="cinsiyet" />
+                                            <label>ERKEK</label>
+                                        </clr-radio-wrapper>
+                                        <clr-control-error>Cinsiyet seçimi zorunludur.</clr-control-error>
+                                    </clr-radio-container>
+
+                                    <clr-input-container>
+                                        <label>Adet</label>
+                                        <input clrInput formControlName="adet" type="number">
+                                        <clr-control-error>Adet seçimi zorunludur.</clr-control-error>
+                                    </clr-input-container>
+                                    <clr-textarea-container>
+                                        <label>Not</label>
+                                        <textarea clrTextarea placeholder="Lütfen varsa notunuzu giriniz"
+                                            formControlName="not"></textarea>
+                                    </clr-textarea-container>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" (click)="submitReq()">
+                                Talep Gönder
+                            </button>
+                        </div>
+                    </clr-modal>
+                    <!-- <div class="btn-group btn-primary">
+                        <button type="button" class="btn btn-danger" *ngIf="admin">
+                            <clr-icon shape="close"></clr-icon> Sil
+                        </button>
+                        <button type="button" class="btn btn-warning" *ngIf="admin">
+                            <clr-icon shape="pencil"></clr-icon> Düzenle
+                        </button>
+                    </div> -->
+                    <div class="btn-group btn-primary">
+                        <button type="button" class="btn" *ngIf="admin">
+                            <clr-icon shape="printer"></clr-icon> YAZDIR
+                        </button>
+                        <button type="button" class="btn" *ngIf="admin && (selected.length > 0)">
+                            <clr-icon shape="printer"></clr-icon> SEÇİLENLERİ YAZDIR
+                        </button>
+                    </div>
+                </clr-dg-action-bar>
+                <clr-dg-column [clrDgField]="'reqNo'">NO</clr-dg-column>
+                <clr-dg-column [clrDgField]="'reqDate'">TARİH</clr-dg-column>
+                <clr-dg-column [clrDgField]="'reqOffice'">ŞUBE</clr-dg-column>
+                <clr-dg-column [clrDgField]="'reqProductName'">ADI</clr-dg-column>
+                <clr-dg-column [clrDgField]="'reqColor'">RENK</clr-dg-column>
+                <clr-dg-column [clrDgField]="'reqFabric'">KUMAŞ</clr-dg-column>
+                <clr-dg-column [clrDgField]="'reqGender'">CİNSİYET</clr-dg-column>
+                <clr-dg-column [clrDgField]="'reqSize'">BEDEN</clr-dg-column>
+                <clr-dg-column [clrDgField]="'reqCount'">ADET</clr-dg-column>
+                <clr-dg-column [clrDgField]="'reqUser'">TALEP EDEN</clr-dg-column>
+                <clr-dg-column [clrDgField]="'reqPriority'">NOT</clr-dg-column>
+                <clr-dg-column [clrDgField]="'reqNote'">ACİLİYET</clr-dg-column>
+                <clr-dg-column [clrDgField]="'reqStatus'">DURUM</clr-dg-column>
+                <clr-dg-placeholder>Veri bulunamadı!</clr-dg-placeholder>
+
+                <clr-dg-row [clrDgSelectable]="!req.locked" [clrDgItem]="req" *clrDgItems="let req of requests"
+                    (clrDgSelectedChange)="selectionChanged($event)">
+                    <clr-dg-action-overflow>
+                        <button class="action-item" (click)="rowEdit(req)">Düzenle</button>
+                        <button class="action-item" (click)="rowDelete(req)">Sil</button>
+                    </clr-dg-action-overflow>
+                    <clr-modal [(clrModalOpen)]="openEdit" [clrModalClosable]="true">
+                        <h3 class="modal-title">Talep Düzenleme</h3>
+                        <div class="modal-body">
+                            <div class="p-3">
+                                <form clrForm clr-form-compact clrLayout="vertical" class="form-request"
+                                    [formGroup]="editRequest">
+                                    <clr-select-container>
+                                        <label>Ürün</label>
+                                        <select clrSelect formControlName="edturun" required>
+                                            <option *ngFor="let product of products" [value]="product.value">
+                                                {{product.value}}</option>
+                                        </select>
+                                        <clr-control-error>Ürün seçimi zorunludur.</clr-control-error>
+                                    </clr-select-container>
+
+                                    <clr-select-container>
+                                        <label>Renk</label>
+                                        <select clrSelect formControlName="edtrenk" required>
+                                            <option *ngFor="let color of colors" [value]="color.value">{{color.value}}
+                                            </option>
+                                        </select>
+                                        <clr-control-error>Renk seçimi zorunludur.</clr-control-error>
+                                    </clr-select-container>
+
+                                    <clr-select-container>
+                                        <label>Beden</label>
+                                        <select clrSelect formControlName="edtbeden" required>
+                                            <option *ngFor="let size of sizes" [value]="size.value">{{size.value}}</option>
+                                        </select>
+                                        <clr-control-error>Beden seçimi zorunludur.</clr-control-error>
+                                    </clr-select-container>
+
+                                    <clr-select-container>
+                                        <label>Kumaş</label>
+                                        <select clrSelect formControlName="edtkumas" required>
+                                            <option *ngFor="let fabric of fabrics" [value]="fabric.value">{{fabric.value}}
+                                            </option>
+                                        </select>
+                                        <clr-control-error>Kumaş seçimi zorunludur.</clr-control-error>
+                                    </clr-select-container>
+
+                                    <clr-radio-container clrInline>
+                                        <label>Cinsiyet</label>
+                                        <clr-radio-wrapper>
+                                            <input type="radio" name="edtcinsiyet" clrRadio required value="BAYAN"
+                                                formControlName="edtcinsiyet" />
+                                            <label>BAYAN</label>
+                                        </clr-radio-wrapper>
+                                        <clr-radio-wrapper>
+                                            <input type="radio" name="edtcinsiyet" clrRadio required value="ERKEK"
+                                                formControlName="edtcinsiyet" />
+                                            <label>ERKEK</label>
+                                        </clr-radio-wrapper>
+                                        <clr-control-error>Cinsiyet seçimi zorunludur.</clr-control-error>
+                                    </clr-radio-container>
+
+                                    <clr-input-container>
+                                        <label>Adet</label>
+                                        <input clrInput formControlName="edtadet" type="number">
+                                        <clr-control-error>Adet seçimi zorunludur.</clr-control-error>
+                                    </clr-input-container>
+                                    <clr-textarea-container>
+                                        <label>Not</label>
+                                        <textarea clrTextarea placeholder="Lütfen varsa notunuzu giriniz"
+                                            formControlName="edtnot"></textarea>
+                                    </clr-textarea-container>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" (click)="submitReq()">
+                                Talep Gönder
+                            </button>
+                        </div>
+                    </clr-modal>
+                    <clr-dg-cell [ngStyle]="{ 'font-weight':'bold'}">{{req.reqNo}}</clr-dg-cell>
+                    <clr-dg-cell>{{req.reqDate | date:'dd-MM-yyyy HH:MM:ss' }} </clr-dg-cell>
+                    <clr-dg-cell>{{req.reqOffice}}</clr-dg-cell>
+                    <clr-dg-cell>{{req.reqProductName}}</clr-dg-cell>
+                    <clr-dg-cell>{{req.reqColor}}</clr-dg-cell>
+                    <clr-dg-cell>{{req.reqFabric}}</clr-dg-cell>
+                    <clr-dg-cell>{{req.reqGender}}</clr-dg-cell>
+                    <clr-dg-cell>{{req.reqSize}}</clr-dg-cell>
+                    <clr-dg-cell>{{req.reqCount}}</clr-dg-cell>
+                    <clr-dg-cell>{{req.reqUser}}</clr-dg-cell>
+                    <clr-dg-cell>{{req.reqNote}}</clr-dg-cell>
+                    <clr-dg-cell
+                        [ngStyle]="{ 'font-weight':'bold', 'color' : (req.reqPriority === 'Acil') ? 'red' : 'orange' }">
+                        {{req.reqPriority}}</clr-dg-cell>
+                    <clr-dg-cell
+                        [ngStyle]="{ 'color' : 'white', 'background-color' : (req.reqStatus == 'GÖNDERİLDİ') ? 'green' : 'red'  }">
+                        {{req.reqStatus}}
+                    </clr-dg-cell>
+                </clr-dg-row>
+
+                <clr-dg-footer>
+                    <clr-dg-pagination #pagination [clrDgPageSize]="10">
+                        <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100]">Sayfa Başı Gösterilecek Talep
+                        </clr-dg-page-size>
+                        Toplam {{pagination.totalItems}} Talepten {{pagination.firstItem + 1}} -
+                        {{pagination.lastItem + 1}} arası gösterilmektedir.
+                    </clr-dg-pagination>
+                </clr-dg-footer>
+            </clr-datagrid>
+        </div>
+
+    </div>
+</div>

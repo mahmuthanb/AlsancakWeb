@@ -16,6 +16,7 @@ import { AddrequestComponent } from './addrequest/addrequest.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './login/login.component';
 import { AuthService } from './services/auth.service';
+import { AuthGuard } from './services/auth.guard';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,7 @@ import { AuthService } from './services/auth.service';
     AngularFirestoreModule,
     AngularFireAuthModule
   ],
-  providers: [RequestsService,AuthService],
+  providers: [RequestsService,AuthService,AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

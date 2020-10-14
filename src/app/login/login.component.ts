@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AppComponent } from '../app.component';
 import { AuthService } from '../services/auth.service';
+import { Router } from '@angular/router';
+import { User } from '../shared/user/user.model';
 
 @Component({
   selector: 'app-login',
@@ -13,10 +15,12 @@ export class LoginComponent implements OnInit {
   username : string;
   password : string;
   heading = AppComponent.heading;
+  user: User;
 
   constructor(
     private formBuilder: FormBuilder,
-    public authService: AuthService) { }
+    public authService: AuthService,
+    private router: Router) { }
 
   ngOnInit(): void {
     this.createLogin();
@@ -33,12 +37,10 @@ export class LoginComponent implements OnInit {
   }
 
   checkLogin() {
-    this.username = this.f.username.value;
-    this.password = this.f.password.value;
-    this.authService.emailSignin(this.username, this.password);
-    alert(this.username);
-    alert(this.password);
-    this.createLogin();
+    this.user.email = this.f.username.value;
+    this.user.password = this.f.password.value;
+    this.authService.signinUser(this.user);
+    
   }
 }
 

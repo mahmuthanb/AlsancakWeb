@@ -14,45 +14,37 @@ import { async } from '@angular/core/testing';
   providedIn: 'root'
 })
 export class AuthService {
-  user$: Observable<User>;
 
+  
   constructor(
-    private afAuth: AngularFireAuth,
-    private afs: AngularFirestore,
     private router: Router,
-  ) {
+    private afAuth: AngularFireAuth) {}
+  redirectURL: string;
 
-    this.user$ = this.afAuth.authState.pipe(
-      switchMap(user => {
-        if (user) {
-          return this.afs.doc<User>(`users/${user.uid}`).valueChanges();
-        } else {
-          return of(null);
-        }
-      })
-    );
+  signupUser(user: User) {
+    this.afAuth.createUserWithEmailAndPassword(user.email, user.password)
+        .catch(function (error) {
+          console.log(error);
+        });
   }
 
-  async emailSignin(email: string, password: string) {
-    // const credential = await this.afAuth.signInWithEmailAndPassword(email, password);
-    return await this.afAuth.signInWithEmailAndPassword(email, password).then(user => this.updateUserData(user.user));
-    // return this.updateUserData(credential.user);
+  signinUser(user: User) {
+    this.afAuth.signInWithEmailAndPassword(user.email, user.password)
+          .catch(function (error) {
+              console.log(error);
+          });
+  }
+  logout() {
+    this.afAuth.signOut();
+    this.router.navigate(['/signin']);
   }
 
-  async signOut() {
-    await this.afAuth.signOut();
-    return this.router.navigate['/'];
-  }
-
-  private updateUserData(user) {
-    const userRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${user.uid}`);
-
-    const data: User = {
-      uid: user.uid,
-      username: user.username,
-    }
-
-    return userRef.set(data, { merge: true });
-
+  isAuthenticated() {
+    var user = this.afAuth.currentUser;
+      if(user){
+          return true;
+      } else {
+          return false
+      }
   }
 }

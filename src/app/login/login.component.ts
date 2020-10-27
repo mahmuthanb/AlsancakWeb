@@ -3,19 +3,19 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AppComponent } from '../app.component';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
-import { User } from '../shared/user/user.model';
+
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
+
 export class LoginComponent implements OnInit {
   formLogin: FormGroup;
-  username : string;
-  password : string;
+  username : String;
+  password : String;
   heading = AppComponent.heading;
-  user: User;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -28,8 +28,8 @@ export class LoginComponent implements OnInit {
 
   createLogin() {
     this.formLogin = this.formBuilder.group({
-      username: ['', Validators.required],
-      password: ['', Validators.required],
+      username: ['mahmuthanb@gmail.com', Validators.required],
+      password: ['19011993', Validators.required],
     });
   }
   get f() {
@@ -37,10 +37,7 @@ export class LoginComponent implements OnInit {
   }
 
   checkLogin() {
-    this.user.email = this.f.username.value;
-    this.user.password = this.f.password.value;
-    this.authService.signinUser(this.user);
-    
+    this.authService.login(this.f.username.value,this.f.password.value);
   }
 }
 

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { RequestsModel, ProductsModel } from '../shared/request/requests.model';
 import { DatePipe } from '@angular/common';
 
@@ -26,13 +25,6 @@ export class RequestsService {
 
   getReqs() {
     this.request = this.requestCollection.valueChanges({idField: 'reqEventId'});
-    // this.request = this.requestCollection.snapshotChanges()
-    //   .pipe(
-    //     map(action => {
-    //       const data = action.payload.data() as RequestsModel;
-    //       const id = action.payload.id;
-    //       return { id, ...data };
-    //     }));
     return this.request;
   }
 

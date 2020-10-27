@@ -3,7 +3,8 @@ import { RequestsService } from '../services/requests.service';
 import { RequestsModel, ProductsModel } from '../shared/request/requests.model';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
-// import { printJS } from 'print-js';
+import { jsPDF } from "jspdf";
+import autoTable from "jspdf-autotable";
 
 @Component({
   selector: 'app-dashboard',
@@ -86,7 +87,9 @@ export class DashboardComponent implements OnInit {
   getRequests() {
     this.requestService.getReqs().subscribe(
       data => {
-        this.requests = data;
+        if(data){
+          this.requests = data; 
+        }
       }
     );
   }
@@ -154,6 +157,115 @@ export class DashboardComponent implements OnInit {
   rowDelete(req: RequestsModel) {
     this.requestService.deleteRequest(req);
     alert(req.reqNo + ' no\'lu satırı silmek istediğinizden emin misiniz ?');
+  }
+
+
+  generateData() {
+    var size = this.requests.length;
+    var result;
+    var data : RequestsModel[];
+    data = this.requests
+    // for (var i = 0; i < size; i += 1) {
+    //   result.push(Object.assign({}, data));
+    // }
+    return data;
+  }
+
+  printData(){
+    // function createHeaders(keys) {
+    //   var result = [];
+    //   for (var i = 0; i < keys.length; i += 1) {
+    //     result.push({
+    //       id: keys[i],
+    //       name: keys[i],
+    //       prompt: keys[i],
+    //       width: 65,
+    //       align: "center",
+    //       padding: 0
+    //     });
+    //   }
+    //   return result;
+    // }
+    
+    // var headers = createHeaders([
+    //   "No",
+    //   "Tarih",
+    //   "Şube",
+    //   "Ürün",
+    //   "Renk",
+    //   "Kumaş",
+    //   "E/K",
+    //   "Beden",
+    //   "Adet",
+    //   "Öncelik",
+    //   "Kullanıcı",
+    //   "Not",
+    //   "Durum"
+    // ]);
+
+    // var doc = new jsPDF();
+    
+    // doc.table(1,1,this.generateData(),headers,{autoSize:true,fontSize:22});
+    // doc.save("A4.pdf");
+
+    // var generateData = function(amount) {
+    //   var result = [];
+    //   var data = {
+    //     coin: "100",
+    //     game_group: "GameGroup",
+    //     game_name: "XPTO2",
+    //     game_version: "25",
+    //     machine: "20485861",
+    //     vlt: "0"
+    //   };
+    //   for (var i = 0; i < amount; i += 1) {
+    //     result.push(Object.assign({}, data));
+    //   }
+    //   return result;
+    // };
+    
+    // function createHeaders(keys) {
+    //   var result = [];
+    //   for (var i = 0; i < keys.length; i += 1) {
+    //     result.push({
+    //       id: keys[i],
+    //       name: keys[i],
+    //       prompt: keys[i],
+    //       width: 65,
+    //       align: "center",
+    //       padding: 0
+    //     });
+    //   }
+    //   return result;
+    // }
+    
+    // var headers = createHeaders([
+    //   "id",
+    //   "coin",
+    //   "game_group",
+    //   "game_name",
+    //   "game_version",
+    //   "machine",
+    //   "vlt"
+    // ]);
+    var len = this.requests.length;
+    var doc = new jsPDF({orientation:"landscape"});
+
+    autoTable(doc,{
+      body: [
+        [{ content: 'Text', colSpan: 2, rowSpan: 2, styles: { halign: 'center' } }],
+      ],
+    })
+    var result = [len][len];
+    doc.save();
+    //applyPlugin(doc);
+    //doc.getTextDimensions("deneme",{font:"helvetica",fontSize:14,maxWidth:53,scaleFactor:2,});
+    //doc.text("dsfsgffgnghjmfhg",3,4,);
+        
+    //doc.autoPrint();
+    //doc.save('asd.pdf');
+    //doc.table(1, 1, generateData(100), headers, { autoSize: true });
+
   }
 }
 

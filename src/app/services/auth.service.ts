@@ -2,49 +2,39 @@ import { Injectable } from '@angular/core';
 import { auth } from 'firebase/app';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
-
-import { Observable, of } from 'rxjs';
-import { switchMap, switchMapTo } from 'rxjs/operators';
-import { User } from '../shared/user/user.model';
 import { Router } from '@angular/router';
-import { async } from '@angular/core/testing';
+import { User } from 'firebase';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-
-  
+  user:User;
   constructor(
-    private router: Router,
-    private afAuth: AngularFireAuth) {}
-  redirectURL: string;
+    public  afAuth:  AngularFireAuth,
+    public  router:  Router){
+      this.afAuth.authState.subscribe(user => {
+        if(user){
+          this.user = user;
+          localStorage.setItem('user',JSON.stringify(this.user));
+        }else{
+          localStorage.setItem('user',null);
+        }
+      })
+    }
+    async login(email:string,password:string){
+      var result = await this.afAuth.signInWithEmailAndPassword(email,password);
+      this.router.navigate(['/dashboard']);
+    }
+    async logout(){
+      this.afAuth.signOut();
+      localStorage.removeItem('user');
+      this.router.navigate(['/login']);
+    }
 
-  signupUser(user: User) {
-    this.afAuth.createUserWithEmailAndPassword(user.email, user.password)
-        .catch(function (error) {
-          console.log(error);
-        });
-  }
-
-  signinUser(user: User) {
-    this.afAuth.signInWithEmailAndPassword(user.email, user.password)
-          .catch(function (error) {
-              console.log(error);
-          });
-  }
-  logout() {
-    this.afAuth.signOut();
-    this.router.navigate(['/signin']);
-  }
-
-  isAuthenticated() {
-    var user = this.afAuth.currentUser;
-      if(user){
-          return true;
-      } else {
-          return false
-      }
-  }
+    get isLoggedIn(): boolean {
+      const user = JSON.parse(localStorage.getItem('user'));
+      return (user !== null) ? true : false;
+    }
 }

@@ -96,7 +96,12 @@
                         </button>
                     </div> -->
                     <div class="btn-group btn-primary">
-                        <button type="button" class="btn" *ngIf="admin">
+                        <button 
+                            type="button" 
+                            class="btn" 
+                            *ngIf="admin"
+                            (click)="printData()"
+                        >
                             <clr-icon shape="printer"></clr-icon> YAZDIR
                         </button>
                         <button type="button" class="btn" *ngIf="admin && (selected.length > 0)">

@@ -82,30 +82,46 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" (click)="submitReq()">
+                            <button type="button" [disabled]="addNewRequest.invalid" class="btn btn-primary" (click)="submitReq()">
                                 Talep Gönder
                             </button>
                         </div>
                     </clr-modal>
-                    <!-- <div class="btn-group btn-primary">
-                        <button type="button" class="btn btn-danger" *ngIf="admin">
-                            <clr-icon shape="close"></clr-icon> Sil
-                        </button>
-                        <button type="button" class="btn btn-warning" *ngIf="admin">
-                            <clr-icon shape="pencil"></clr-icon> Düzenle
-                        </button>
-                    </div> -->
                     <div class="btn-group btn-primary">
                         <button 
                             type="button" 
                             class="btn" 
-                            *ngIf="admin"
-                            (click)="printData()"
-                        >
+                            *ngIf="true"
+                            (click)="printData(this.requestData)">
                             <clr-icon shape="printer"></clr-icon> YAZDIR
                         </button>
-                        <button type="button" class="btn" *ngIf="admin && (selected.length > 0)">
+                        <button 
+                        type="button" 
+                        class="btn" 
+                        *ngIf="(selected.length > 0)"
+                        (click)="printData(this.selected)">
                             <clr-icon shape="printer"></clr-icon> SEÇİLENLERİ YAZDIR
+                        </button>
+                    </div>
+                    <div class="btn-group btn-primary">
+                        <button 
+                        type="button"
+                        class="btn btn-danger"
+                        *ngIf="this.isAdmin && (selected.length > 0)"
+                        >
+                        <clr-icon shape="user" title="Admin Only Buttons"></clr-icon>
+                        </button>
+                        <button 
+                        type="button" 
+                        class="btn btn-danger" 
+                        *ngIf="this.isAdmin && (selected.length > 0)">
+                            <clr-icon shape="close"></clr-icon> Sil
+                        </button>
+                        <button 
+                        type="button" 
+                        class="btn btn-warning" 
+                        *ngIf="this.isAdmin && (selected.length > 0)">
+                            <clr-icon shape="pencil"></clr-icon> Düzenle
                         </button>
                     </div>
                 </clr-dg-action-bar>
@@ -119,14 +135,14 @@
                 <clr-dg-column [clrDgField]="'reqSize'">BEDEN</clr-dg-column>
                 <clr-dg-column [clrDgField]="'reqCount'">ADET</clr-dg-column>
                 <clr-dg-column [clrDgField]="'reqUser'">TALEP EDEN</clr-dg-column>
-                <clr-dg-column [clrDgField]="'reqPriority'">NOT</clr-dg-column>
-                <clr-dg-column [clrDgField]="'reqNote'">ACİLİYET</clr-dg-column>
+                <clr-dg-column [clrDgField]="'reqNote'">NOT</clr-dg-column>
+                <clr-dg-column [clrDgField]="'reqPriority'">ACİLİYET</clr-dg-column>
                 <clr-dg-column [clrDgField]="'reqStatus'">DURUM</clr-dg-column>
                 <clr-dg-placeholder>Veri bulunamadı!</clr-dg-placeholder>
 
-                <clr-dg-row [clrDgSelectable]="!req.locked" [clrDgItem]="req" *clrDgItems="let req of requests"
+                <clr-dg-row [clrDgSelectable]="!req.locked" [clrDgItem]="req" *clrDgItems="let req of requestData"
                     (clrDgSelectedChange)="selectionChanged($event)">
-                    <clr-dg-action-overflow>
+                    <clr-dg-action-overflow *ngIf="this.isAdmin">
                         <button class="action-item" (click)="rowEdit(req)">Düzenle</button>
                         <button class="action-item" (click)="rowDelete(req)">Sil</button>
                     </clr-dg-action-overflow>
@@ -206,7 +222,7 @@
                         </div>
                     </clr-modal>
                     <clr-dg-cell [ngStyle]="{ 'font-weight':'bold'}">{{req.reqNo}}</clr-dg-cell>
-                    <clr-dg-cell>{{req.reqDate | date:'dd-MM-yyyy HH:MM:ss' }} </clr-dg-cell>
+                    <clr-dg-cell>{{req.reqDate | date:'dd-MM-yyyy H:mm:ss' }} </clr-dg-cell>
                     <clr-dg-cell>{{req.reqOffice}}</clr-dg-cell>
                     <clr-dg-cell>{{req.reqProductName}}</clr-dg-cell>
                     <clr-dg-cell>{{req.reqColor}}</clr-dg-cell>
@@ -217,10 +233,10 @@
                     <clr-dg-cell>{{req.reqUser}}</clr-dg-cell>
                     <clr-dg-cell>{{req.reqNote}}</clr-dg-cell>
                     <clr-dg-cell
-                        [ngStyle]="{ 'font-weight':'bold', 'color' : (req.reqPriority === 'Acil') ? 'red' : 'orange' }">
+                        [ngStyle]="{ 'font-weight':'bold','background-color': (req.reqPriority === 'Acil') ? 'red' : 'orange', 'color' : 'white' }">
                         {{req.reqPriority}}</clr-dg-cell>
                     <clr-dg-cell
-                        [ngStyle]="{ 'color' : 'white', 'background-color' : (req.reqStatus == 'GÖNDERİLDİ') ? 'green' : 'red'  }">
+                        [ngStyle]="{ 'color' : 'white', 'background-color' : (req.reqStatus === 'Gönderildi') ? 'green' : 'red'  }">
                         {{req.reqStatus}}
                     </clr-dg-cell>
                 </clr-dg-row>

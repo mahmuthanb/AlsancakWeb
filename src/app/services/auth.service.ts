@@ -37,4 +37,7 @@ export class AuthService {
       const user = JSON.parse(localStorage.getItem('user'));
       return (user !== null) ? true : false;
     }
+    get isAdmin(): boolean{
+      return (this.user.email == 'yusuf@sayi.com') ? true : false;
+    }
 }

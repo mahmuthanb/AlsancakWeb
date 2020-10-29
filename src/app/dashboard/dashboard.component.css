@@ -1,0 +1,27 @@
+.form-request {
+    width: 100% !important;
+}
+.form-request .clr-control-container {
+    display: block;
+    width: 100% !important;
+}
+.form-request .clr-control-container .clr-select-wrapper, .form-request .clr-control-container .clr-select {
+    width: 100% !important;
+}
+.form-request .clr-control-container .hf-search-wrapper > .hf-search, .form-request .clr-control-container .hf-search-select-input, .form-request .clr-control-container .hf-search-input-text-container {
+    width: 100% !important;
+}
+.form-request .clr-control-container .clr-input-wrapper > .clr-input {
+    width: 100% !important;
+}
+.form-request .clr-control-container .clr-input-wrapper {
+    width: 100% !important;
+}
+.form-request .clr-control-container .clr-input-wrapper > .clr-input-group {
+    max-width: 100% !important;
+    width: 100% !important;
+    padding-right: 0.4rem;
+}
+.form-request .clr-control-container .clr-input-wrapper > .clr-input-group > input {
+    width: calc(100% - 1rem);
+}

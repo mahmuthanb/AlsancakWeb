@@ -12,6 +12,8 @@ export class RequestsService {
   productsCollection: AngularFirestoreCollection<ProductsModel>;
   fabricsCollection: AngularFirestoreCollection<ProductsModel>;
   request: Observable<RequestsModel[]>;
+  reqCounter: AngularFirestoreDocument<String>;
+  reqCount: Observable<String>;
   requestDoc: AngularFirestoreDocument<RequestsModel>;
   sendReq: RequestsModel;
   product: Observable<ProductsModel[]>;
@@ -27,8 +29,16 @@ export class RequestsService {
     this.request = this.requestCollection.valueChanges({idField: 'reqEventId'});
     return this.request;
   }
-
-
+  getReqCount(){
+    this.reqCounter = this.afs.collection<String>('reqCounter').doc('reqCount');
+    this.reqCount = this.reqCounter.valueChanges();
+    return this.reqCount;
+  }
+  updateReqCount(countData: String){
+    this.afs.collection('reqCounter').doc('reqCount').update({
+      count: countData
+    })
+  }
   getProducts() {
     this.productsCollection = this.afs.collection<ProductsModel>('products');
     this.product = this.productsCollection.valueChanges();
@@ -50,7 +60,7 @@ export class RequestsService {
     return this.size;
   }
   submitRequest(req: RequestsModel) {
-    this.requestCollection.add(JSON.parse(JSON.stringify(req)));
+    this.requestCollection.doc(req.reqNo).set(JSON.parse(JSON.stringify(req)));
   }
 
   deleteRequest(req: RequestsModel) {

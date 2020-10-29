@@ -12,14 +12,13 @@ export class HeaderComponent implements OnInit {
   title: string;
   username: string;
 
-  constructor(
-    private authService:AuthService
-  ) { }
-
+  constructor(public authService:AuthService) {
+  }
+  
   ngOnInit(): void {
     this.title = AppComponent.title;
-
   }
+
   logOut(){
     this.authService.logout();
   }
